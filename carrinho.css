@@ -1,0 +1,41 @@
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+}
+
+button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+#campoOutroBairro,
+#avisoOutrosBairros,
+#bannerFrete {
+    transition: all 0.3s ease;
+}
+
+#listaItens,
+#resumoItens {
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+@media (max-width: 640px) {
+    body {
+        font-size: 14px;
+    }
+}

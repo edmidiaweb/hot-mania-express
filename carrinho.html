@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar Pedido | HOT MANIA EXPRESS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="carrinho.css">
+</head>
+<body class="text-gray-800 antialiased min-h-screen pb-12" style="background-image: url('fundo.png'); background-size: cover; background-position: center; background-attachment: fixed;">
+
+    <header class="bg-red-700 text-white sticky top-0 z-50 shadow-md px-4 py-3">
+        <div class="max-w-xl mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold tracking-tight flex items-center gap-2">
+                    <img src="logo.png" alt="Logo" class="h-8 w-8 rounded-full object-cover shadow-sm"> HOT MANIA EXPRESS
+                </h1>
+                <p class="text-xs text-red-100">Fechamento do Pedido</p>
+            </div>
+            <a href="index.html" class="inline-flex items-center text-xs bg-red-600 hover:bg-red-500 transition px-3 py-1.5 rounded-xl gap-1 border border-red-500 font-semibold">
+                <i class="fas fa-arrow-left"></i> Cardápio
+            </a>
+        </div>
+    </header>
+
+    <div class="max-w-xl mx-auto px-4 pt-4 pb-2">
+        <div class="flex items-center justify-between">
+            <div class="flex flex-col items-center gap-1" id="step-indicator-1">
+                <div id="step-circle-1" class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold border-2 transition-all duration-300 bg-red-700 border-red-700 text-white">
+                    <i class="fas fa-shopping-basket text-xs"></i>
+                </div>
+                <span class="text-xs font-semibold text-red-700" id="step-label-1">Carrinho</span>
+            </div>
+
+            <div class="flex-1 mx-2 h-1 rounded-full transition-all duration-500" id="step-line-1" style="background: #fee2e2;"></div>
+
+            <div class="flex flex-col items-center gap-1" id="step-indicator-2">
+                <div id="step-circle-2" class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold border-2 transition-all duration-300 bg-white border-gray-300 text-gray-400">
+                    <i class="fas fa-map-marker-alt text-xs"></i>
+                </div>
+                <span class="text-xs font-semibold text-gray-400" id="step-label-2">Entrega</span>
+            </div>
+
+            <div class="flex-1 mx-2 h-1 rounded-full transition-all duration-500" id="step-line-2" style="background: #e5e7eb;"></div>
+
+            <div class="flex flex-col items-center gap-1" id="step-indicator-3">
+                <div id="step-circle-3" class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold border-2 transition-all duration-300 bg-white border-gray-300 text-gray-400">
+                    <i class="fas fa-check text-xs"></i>
+                </div>
+                <span class="text-xs font-semibold text-gray-400" id="step-label-3">Confirmação</span>
+            </div>
+        </div>
+    </div>
+
+    <main class="max-w-xl mx-auto p-4 mt-1">
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4 text-sm text-blue-900">
+            <p class="font-bold mb-1 flex items-center gap-2"><i class="fas fa-truck"></i> Condições de entrega</p>
+            <p>Pedidos realizados.</p>
+            <p class="mt-2">O frete grátis .</p>
+        </div>
+
+        <div id="etapa-1" class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+            <h2 class="text-sm font-bold text-red-950 uppercase tracking-wider mb-3 flex items-center gap-2">
+                <i class="fas fa-shopping-basket text-red-500"></i> Seus Produtos Selecionados
+            </h2>
+
+            <div id="bannerFrete" class="hidden flex items-center gap-2 text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2 mb-3">
+                <i class="fas fa-truck text-emerald-500"></i>
+                <span>Entregas <strong>grátis</strong> a partir de <strong>R$ 30,00</strong> em produtos!</span>
+            </div>
+
+            <div id="listaItens" class="divide-y divide-gray-100 text-sm"></div>
+
+            <div class="mt-4 bg-red-50/50 p-4 rounded-xl border border-red-100/50 space-y-2 text-sm text-gray-600">
+                <div class="flex justify-between">
+                    <span>Subtotal Produtos:</span>
+                    <span class="font-semibold text-red-950" id="valorProdutos">R$ 0,00</span>
+                </div>
+                <div class="flex justify-between items-center pt-2 border-t border-red-100">
+                    <span class="text-base font-bold text-gray-800">Total Estimado:</span>
+                    <span class="text-xl font-black text-red-950" id="valorTotalGeral">R$ 0,00</span>
+                </div>
+                <p class="text-xs text-gray-400 italic">* Taxa de entrega calculada na próxima etapa</p>
+            </div>
+
+            <button onclick="irParaEtapa(2)" id="btnAvancarEtapa1"
+                class="mt-5 w-full bg-red-700 hover:bg-red-800 text-white font-bold py-3.5 px-4 rounded-xl shadow-md hover:shadow-lg transition duration-200 flex items-center justify-center gap-2 text-base tracking-wide disabled:opacity-40 disabled:cursor-not-allowed">
+                Continuar para Entrega <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <div id="etapa-2" class="hidden bg-white p-5 rounded-2xl shadow-sm border border-gray-100 space-y-3.5">
+            <h2 class="text-sm font-bold text-red-950 uppercase tracking-wider mb-1 flex items-center gap-2">
+                <i class="fas fa-map-marked-alt text-red-500"></i> Dados para Entrega
+            </h2>
+
+            <div>
+                <label class="block text-xs font-semibold text-gray-500 mb-1">Nome do Recebedor</label>
+                <input type="text" id="nomeRecebedor" placeholder="Ex: João da Silva"
+                    class="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm text-gray-700 transition" />
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-gray-500 mb-1">Rua / Logradouro</label>
+                <input type="text" id="rua" placeholder="Ex: Rua das Flores"
+                    class="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm text-gray-700 transition" />
+            </div>
+
+            <div class="grid grid-cols-3 gap-3">
+                <div class="col-span-1">
+                    <label class="block text-xs font-semibold text-gray-500 mb-1">Número</label>
+                    <input type="text" id="numero" placeholder="Ex: 123"
+                        class="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm text-gray-700 transition" />
+                </div>
+                <div class="col-span-2">
+                    <label for="bairro" class="block text-xs font-semibold text-gray-500 mb-1">Bairro</label>
+                    <select id="bairro" onchange="onBairroChange()"
+                        class="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm text-gray-700 transition">
+                        <option value="" disabled selected>Selecione seu bairro...</option>
+                        <option value="Centro">Centro (Taxa: R$ 5,00)</option>
+                        <option value="Praia">Praia (Taxa: R$ 5,00)</option>
+                        <option value="Vila Nova">Vila Nova (Taxa: R$ 5,00)</option>
+                        <option value="Balneário">Balneário (Taxa: R$ 5,00)</option>
+                        <option value="Outros">Outros bairros</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="campoOutroBairro" class="hidden">
+                <label class="block text-xs font-semibold text-gray-500 mb-1">Digite o bairro</label>
+                <div class="relative">
+                    <input type="text" id="bairroOutro" placeholder="Qual é o seu bairro?"
+                        class="w-full px-4 py-2.5 bg-white border border-amber-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent text-sm text-gray-700 transition" />
+                </div>
+                <p class="text-xs text-amber-700 mt-1">Entregas em toda a região.</p>
+            </div>
+
+            <div id="avisoOutrosBairros" class="hidden">
+                <div class="bg-amber-50 border border-amber-300 rounded-xl p-4 text-sm text-amber-800 space-y-2">
+                    <p class="font-bold flex items-center gap-2">
+                        <i class="fas fa-exclamation-triangle text-amber-500"></i> Atenção — Entrega em outro bairro
+                    </p>
+                    <ul class="list-disc list-inside space-y-1 text-xs leading-relaxed">
+                        <li>A taxa de entrega para este bairro é de <strong>R$ 10,00</strong>.</li>
+                        <li id="mensagemFreteOutros"><strong>Promoção:</strong> Frete GRÁTIS para compras acima de <strong>R$ 50,00</strong>!</li>
+                        <li>O pagamento pode ser realizado em <strong>Dinheiro ou Pix</strong>.</li>
+                    </ul>
+                </div>
+                <div class="mt-2">
+                    <label for="confirmaOutrosBairros" class="block text-xs font-semibold text-gray-500 mb-1">
+                        Confirmação obrigatória
+                    </label>
+                    <select id="confirmaOutrosBairros" onchange="atualizarBotaoEtapa2()"
+                        class="w-full px-4 py-2.5 bg-white border border-amber-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent text-sm text-gray-700 transition">
+                        <option value="" disabled selected>Selecione para confirmar...</option>
+                        <option value="sim">Sim, estou ciente e aceito as condições</option>
+                        <option value="nao">Não, quero escolher outro bairro</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-gray-500 mb-1">Ponto de Referência <span class="text-red-500 font-bold">(Obrigatório)</span></label>
+                <input type="text" id="referencia" placeholder="Ex: Próximo ao mercado"
+                    class="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm text-gray-700 transition" />
+            </div>
+
+            <div>
+                <label for="pagamento" class="block text-xs font-semibold text-gray-500 mb-1">Forma de Pagamento</label>
+                <select id="pagamento" onchange="verificarPagamento()"
+                        class="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm text-gray-700 transition">
+                        <option value="Dinheiro">Dinheiro</option>
+                        <option value="Pix">Pix</option>
+                </select>
+            </div>
+
+            <div id="containerTroco" class="hidden">
+                <label class="block text-xs font-semibold text-gray-500 mb-1">Precisa de troco para quanto?</label>
+                <input type="text" id="troco" placeholder="Ex: Troco para R$ 50,00"
+                    class="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm text-gray-700 transition" />
+            </div>
+
+            <div class="flex gap-3 pt-1">
+                <button onclick="irParaEtapa(1)"
+                    class="flex-1 bg-white hover:bg-gray-50 text-gray-600 font-semibold py-3 px-4 rounded-xl border border-gray-200 transition duration-200 flex items-center justify-center gap-2 text-sm">
+                    <i class="fas fa-arrow-left"></i> Voltar
+                </button>
+                <button onclick="irParaEtapa(3)" id="btnAvancarEtapa2"
+                    class="flex-[2] bg-red-700 hover:bg-red-800 text-white font-bold py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition duration-200 flex items-center justify-center gap-2 text-sm tracking-wide">
+                    Revisar Pedido <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="etapa-3" class="hidden bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+            <h2 class="text-sm font-bold text-red-950 uppercase tracking-wider mb-4 flex items-center gap-2">
+                <i class="fas fa-clipboard-check text-red-500"></i> Revise seu Pedido
+            </h2>
+
+            <div class="mb-4">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Produtos</p>
+                <div id="resumoItens" class="divide-y divide-gray-100 text-sm"></div>
+            </div>
+
+            <div class="mb-4 bg-red-50/50 rounded-xl p-4 border border-red-100/50 space-y-1.5 text-sm">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Entrega</p>
+                <div class="flex gap-2"><i class="fas fa-user text-red-400 w-4 mt-0.5"></i><span id="resumoNome" class="text-gray-700"></span></div>
+                <div class="flex gap-2"><i class="fas fa-map-marker-alt text-red-400 w-4 mt-0.5"></i><span id="resumoEndereco" class="text-gray-700"></span></div>
+                <div class="flex gap-2"><i class="fas fa-home text-red-400 w-4 mt-0.5"></i><span id="resumoBairro" class="text-gray-700"></span></div>
+                <div class="flex gap-2"><i class="fas fa-flag text-red-400 w-4 mt-0.5"></i><span id="resumoReferencia" class="text-gray-700"></span></div>
+            </div>
+
+            <div class="mb-5 bg-red-50/50 p-4 rounded-xl border border-red-100/50 space-y-2 text-sm text-gray-600">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Resumo Financeiro</p>
+                <div class="flex justify-between">
+                    <span>Subtotal:</span>
+                    <span class="font-semibold text-red-950" id="resumoSubtotal">R$ 0,00</span>
+                </div>
+                <div id="resumoBlocoTaxa" class="flex justify-between font-medium text-gray-600">
+                    <span>Taxa de Entrega:</span>
+                    <span id="resumoTaxa" class="font-semibold">R$ 0,00</span>
+                </div>
+                <div class="flex justify-between pt-2 border-t border-red-100">
+                    <span class="font-bold text-base">Total:</span>
+                    <span class="text-xl font-black text-red-950" id="resumoTotal">R$ 0,00</span>
+                </div>
+            </div>
+
+            <div class="mb-4 bg-gray-50 p-4 rounded-xl border border-gray-200 text-sm">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Forma de Pagamento</p>
+                <p class="text-gray-700 font-semibold" id="resumoPagamento">Dinheiro</p>
+            </div>
+
+            <div id="containerPixDinamico" class="hidden mb-4 bg-amber-50 p-4 rounded-xl border border-amber-200">
+                <p class="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2">Pix Copia e Cola</p>
+                <div class="flex gap-2">
+                    <input type="text" id="codigoPixGerado" readonly 
+                        class="flex-1 px-3 py-2 bg-white border border-amber-300 rounded-lg text-xs font-mono text-gray-700 focus:outline-none" />
+                    <button onclick="copiarCodigoPix()" id="btnCopiarPix"
+                        class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-4 py-2 rounded-lg text-xs transition flex items-center gap-1">
+                        <i class="fas fa-copy"></i> Copiar
+                    </button>
+                </div>
+                <p class="text-xs text-amber-700 mt-2">Use este código no seu app de banco para realizar o pagamento.</p>
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="irParaEtapa(2)"
+                    class="flex-1 bg-white hover:bg-gray-50 text-gray-600 font-semibold py-3 px-4 rounded-xl border border-gray-200 transition duration-200 flex items-center justify-center gap-2 text-sm">
+                    <i class="fas fa-edit"></i> Editar
+                </button>
+                <button onclick="confirmarPedido()"
+                    class="flex-[2] bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition duration-200 flex items-center justify-center gap-2 text-sm tracking-wide">
+                    <i class="fas fa-whatsapp"></i> Enviar via WhatsApp
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Início do Footer -->
+<footer class="mt-8 py-6 bg-black/70 backdrop-blur-md border-t border-gray-800 text-center w-full relative z-10">
+    <p class="text-xs text-gray-400">
+        Desenvolvido por <span class="font-bold text-white tracking-wide">ED ART&MÍDIA</span> serviços de tecnologia.
+    </p>
+</footer>
+<!-- Fim do Footer -->
+
+    <script src="carrinho.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+[
+    {
+        "Produto": "Hot Dog Simples",
+        "Valor de venda (R$)": 12.00,
+        "Categoria": "Tradicionais",
+        "Estoque": 100,
+        "imagem": "hotdog_simples.png"
+    },
+    {
+        "Produto": "Hot Dog Completo",
+        "Valor de venda (R$)": 15.00,
+        "Categoria": "Tradicionais",
+        "Estoque": 100,
+        "imagem": "hotdog_completo.png"
+    },
+    {
+        "Produto": "Hot Dog Especial",
+        "Valor de venda (R$)": 18.00,
+        "Categoria": "Especiais",
+        "Estoque": 50,
+        "imagem": "hotdog_especial.png"
+    },
+    {
+        "Produto": "Hot Dog Vegano",
+        "Valor de venda (R$)": 20.00,
+        "Categoria": "Especiais",
+        "Estoque": 20,
+        "imagem": "hotdog_vegano.png"
+    },
+    {
+        "Produto": "Hot Dog Bacon e Queijo",
+        "Valor de venda (R$)": 22.00,
+        "Categoria": "Especiais",
+        "Estoque": 30,
+        "imagem": "hotdog_bacon.png"
+    },
+    {
+        "Produto": "Refrigerante Lata",
+        "Valor de venda (R$)": 5.00,
+        "Categoria": "Bebidas",
+        "Estoque": 200,
+        "imagem": "refri_lata.png"
+    },
+    {
+        "Produto": "Suco Natural",
+        "Valor de venda (R$)": 7.00,
+        "Categoria": "Bebidas",
+        "Estoque": 50,
+        "imagem": "suco_natural.png"
+    },
+    {
+        "Produto": "Água Mineral",
+        "Valor de venda (R$)": 3.00,
+        "Categoria": "Bebidas",
+        "Estoque": 150,
+        "imagem": "agua_mineral.png"
+    }
+]

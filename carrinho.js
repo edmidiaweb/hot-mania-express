@@ -2,16 +2,16 @@ let carrinho = JSON.parse(localStorage.getItem('carrinho') || '[]');
 let etapaAtual = 1;
 let pedidoEnviado = false;
 
-const TAXA_OUTROS_BAIRROS = 10;
-const MINIMO_FRETE_GRATIS = 30;
-const MINIMO_FRETE_GRATIS_OUTROS = 50;
-
 const tabelaTaxas = {
-    "Centro": 5,
-    "Praia": 5,
-    "Vila Nova": 5,
-    "Balneário": 5,
-    "Outros": TAXA_OUTROS_BAIRROS
+    "Belas Artes": 5,
+    "Praia do Sonho": 5,
+    "Cibratel (até a AV São Paulo)": 5,
+    "Corumbá": 5,
+    "Ieda": 5,
+    "Sabaúna": 6,
+    "Guapiranga": 6,
+    "Umuarama": 6,
+    "América": 6
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     recuperarEnderecoSalvo();
     atualizarStepper(1);
     atualizarResumoFinanceiro();
+    verificarPagamento();
 });
 
 function atualizarStepper(etapa) {
@@ -73,37 +74,34 @@ function validarEtapa2() {
     const num = document.getElementById('numero').value.trim();
     const bairro = document.getElementById('bairro').value;
     const ref = document.getElementById('referencia').value.trim();
-    const bairroOutro = document.getElementById('bairroOutro').value.trim();
 
     if (!nome || !rua || !num || !bairro || !ref) {
         alert("Por favor, preencha todos os campos: Nome, Rua, Número, Bairro e Ponto de Referência.");
         return false;
     }
 
-    if (bairro === 'Outros') {
-        if (!bairroOutro) {
-            alert("Digite o bairro para continuar.");
-            return false;
-        }
-        const confirma = document.getElementById('confirmaOutrosBairros').value;
-        if (confirma !== 'sim') {
-            alert("Para continuar com entrega em outro bairro, confirme que aceita as condições.");
-            return false;
-        }
-    }
-
     const pag = document.getElementById('pagamento').value;
     if (pag === 'Dinheiro') {
         const trocoValor = document.getElementById('troco').value.trim();
-        if (trocoValor) {
-            const subtotal = carrinho.reduce((acc, item) => acc + (item.preco * item.qtd), 0);
-            const taxa = calcularTaxa(bairro, subtotal);
-            const total = subtotal + taxa;
-            const trocoNum = parseFloat(trocoValor.replace(',', '.'));
-            if (!isNaN(trocoNum) && trocoNum < total) {
-                alert(`O valor do troco (R$ ${trocoNum.toFixed(2).replace('.', ',')}) é menor que o total do pedido (R$ ${total.toFixed(2).replace('.', ',')}). Por favor, corrija.`);
-                return false;
-            }
+
+        if (!trocoValor) {
+            alert("Por favor, informe para quanto precisa de troco.");
+            return false;
+        }
+
+        const subtotal = carrinho.reduce((acc, item) => acc + (item.preco * item.qtd), 0);
+        const taxa = calcularTaxa(bairro, subtotal);
+        const total = subtotal + taxa;
+        const trocoNum = parseFloat(trocoValor.replace(',', '.'));
+
+        if (isNaN(trocoNum)) {
+            alert("Por favor, informe um valor de troco válido.");
+            return false;
+        }
+
+        if (trocoNum < total) {
+            alert(`O valor do troco (R$ ${trocoNum.toFixed(2).replace('.', ',')}) é menor que o total do pedido (R$ ${total.toFixed(2).replace('.', ',')}). Por favor, corrija.`);
+            return false;
         }
     }
 
@@ -150,56 +148,10 @@ function renderizarItensCarrinho() {
 function atualizarResumoFinanceiro() {
     const labelProdutos = document.getElementById('valorProdutos');
     const labelTotalGeral = document.getElementById('valorTotalGeral');
-    const banner = document.getElementById('bannerFrete');
-    const mensagemFreteOutros = document.getElementById('mensagemFreteOutros');
 
     const subtotal = carrinho.reduce((acc, item) => acc + (item.preco * item.qtd), 0);
     labelProdutos.innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
     labelTotalGeral.innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
-
-    const bairroSelecionado = document.getElementById('bairro')?.value || '';
-
-    if (mensagemFreteOutros) {
-        if (subtotal >= MINIMO_FRETE_GRATIS_OUTROS) {
-            mensagemFreteOutros.innerHTML = `🎉 <strong>Parabéns! Você atingiu o valor mínimo para frete grátis!</strong>`;
-            mensagemFreteOutros.className = "text-emerald-700 font-bold list-none -ml-5";
-        } else {
-            const faltamOutros = (MINIMO_FRETE_GRATIS_OUTROS - subtotal).toFixed(2).replace('.', ',');
-            mensagemFreteOutros.innerHTML = `⚠️ Faltam <strong>R$ ${faltamOutros}</strong> para o frete grátis!`;
-            mensagemFreteOutros.className = "text-amber-900 font-bold list-none -ml-5";
-        }
-    }
-
-    if (!bairroSelecionado) {
-        banner.classList.add('hidden');
-        return;
-    }
-
-    if (bairroSelecionado === 'Outros') {
-        const freteGratisOutros = subtotal >= MINIMO_FRETE_GRATIS_OUTROS;
-        if (freteGratisOutros) {
-            banner.className = "flex items-center gap-2 text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2 mb-3";
-            banner.innerHTML = `<i class="fas fa-check-circle text-emerald-500"></i><span>🎉 <strong>Parabéns! Você atingiu o valor mínimo para frete grátis!</strong></span>`;
-        } else {
-            const faltamOutros = (MINIMO_FRETE_GRATIS_OUTROS - subtotal).toFixed(2).replace('.', ',');
-            banner.className = "flex items-center gap-2 text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2 mb-3";
-            banner.innerHTML = `<i class="fas fa-truck text-amber-500"></i><span>Faltam <strong>R$ ${faltamOutros}</strong> para conseguir frete grátis em Outros Bairros!</span>`;
-        }
-        banner.classList.remove('hidden');
-        return;
-    }
-
-    const freteGratis = subtotal >= MINIMO_FRETE_GRATIS;
-
-    if (freteGratis) {
-        banner.className = "flex items-center gap-2 text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2 mb-3";
-        banner.innerHTML = `<i class="fas fa-check-circle text-emerald-500"></i><span>🎉 <strong>Parabéns! Você atingiu o valor mínimo para frete grátis!</strong></span>`;
-    } else {
-        const faltam = (MINIMO_FRETE_GRATIS - subtotal).toFixed(2).replace('.', ',');
-        banner.className = "flex items-center gap-2 text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2 mb-3";
-        banner.innerHTML = `<i class="fas fa-truck text-amber-500"></i><span>Faltam <strong>R$ ${faltam}</strong> para conseguir frete grátis!</span>`;
-    }
-    banner.classList.remove('hidden');
 }
 
 function removerItemCarrinho(nomeDoProduto) {
@@ -208,50 +160,14 @@ function removerItemCarrinho(nomeDoProduto) {
     renderizarItensCarrinho();
 }
 
-function onBairroChange() {
-    const bairro = document.getElementById('bairro').value;
-    const aviso = document.getElementById('avisoOutrosBairros');
-    const campoOutro = document.getElementById('campoOutroBairro');
-
-    if (bairro === 'Outros') {
-        aviso.classList.remove('hidden');
-        campoOutro.classList.remove('hidden');
-    } else {
-        aviso.classList.add('hidden');
-        campoOutro.classList.add('hidden');
-        document.getElementById('bairroOutro').value = '';
-        document.getElementById('confirmaOutrosBairros').value = '';
-    }
-
-    atualizarBotaoEtapa2();
-    atualizarResumoFinanceiro();
-}
-
-function atualizarBotaoEtapa2() {
-    const bairro = document.getElementById('bairro').value;
-    const btn = document.getElementById('btnAvancarEtapa2');
-
-    if (bairro === 'Outros') {
-        const confirma = document.getElementById('confirmaOutrosBairros').value;
-        btn.disabled = confirma !== 'sim';
-        btn.classList.toggle('opacity-40', confirma !== 'sim');
-        btn.classList.toggle('cursor-not-allowed', confirma !== 'sim');
-    } else {
-        btn.disabled = false;
-        btn.classList.remove('opacity-40', 'cursor-not-allowed');
-    }
-
-    atualizarResumoFinanceiro();
-}
-
 function verificarPagamento() {
     const pag = document.getElementById('pagamento').value;
     const containerTroco = document.getElementById('containerTroco');
     containerTroco.classList.toggle('hidden', pag !== 'Dinheiro');
 }
 
-function salvarDadosEndereco(nome, rua, numero, bairro, referencia, bairroOutro) {
-    localStorage.setItem('endereco_cliente', JSON.stringify({ nome, rua, numero, bairro, referencia, bairroOutro }));
+function salvarDadosEndereco(nome, rua, numero, bairro, referencia) {
+    localStorage.setItem('endereco_cliente', JSON.stringify({ nome, rua, numero, bairro, referencia }));
 }
 
 function recuperarEnderecoSalvo() {
@@ -262,17 +178,10 @@ function recuperarEnderecoSalvo() {
         document.getElementById('numero').value = dados.numero || '';
         document.getElementById('bairro').value = dados.bairro || '';
         document.getElementById('referencia').value = dados.referencia || '';
-        document.getElementById('bairroOutro').value = dados.bairroOutro || '';
-        if (dados.bairro === 'Outros') onBairroChange();
     }
 }
 
 function calcularTaxa(bairro, subtotal) {
-    if (bairro === 'Outros') {
-        if (subtotal >= MINIMO_FRETE_GRATIS_OUTROS) return 0;
-        return TAXA_OUTROS_BAIRROS;
-    }
-    if (subtotal >= MINIMO_FRETE_GRATIS) return 0;
     return tabelaTaxas[bairro] || 0;
 }
 
@@ -281,9 +190,9 @@ function preencherResSummary() {
     const rua = document.getElementById('rua').value.trim();
     const num = document.getElementById('numero').value.trim();
     const bairro = document.getElementById('bairro').value;
-    const bairroOutro = document.getElementById('bairroOutro').value.trim();
     const ref = document.getElementById('referencia').value.trim();
     const pag = document.getElementById('pagamento').value;
+    
     const subtotal = carrinho.reduce((acc, item) => acc + (item.preco * item.qtd), 0);
     const taxa = calcularTaxa(bairro, subtotal);
     const total = subtotal + taxa;
@@ -295,21 +204,15 @@ function preencherResSummary() {
 
     document.getElementById('resumoNome').textContent = nome;
     document.getElementById('resumoEndereco').textContent = `${rua}, Nº ${num}`;
-    document.getElementById('resumoBairro').textContent = bairro === 'Outros' ? bairroOutro : bairro;
+    document.getElementById('resumoBairro').textContent = bairro;
     document.getElementById('resumoReferencia').textContent = ref;
     document.getElementById('resumoSubtotal').textContent = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
 
     const taxaEl = document.getElementById('resumoTaxa');
     const blocoEl = document.getElementById('resumoBlocoTaxa');
-    if (taxa === 0) {
-        taxaEl.textContent = 'GRÁTIS';
-        taxaEl.className = 'text-emerald-600 font-bold';
-        blocoEl.className = 'flex justify-between font-medium text-emerald-600';
-    } else {
-        taxaEl.textContent = `R$ ${taxa.toFixed(2).replace('.', ',')}`;
-        taxaEl.className = 'text-gray-800 font-semibold';
-        blocoEl.className = 'flex justify-between font-medium text-gray-600';
-    }
+    taxaEl.textContent = `R$ ${taxa.toFixed(2).replace('.', ',')}`;
+    taxaEl.className = 'text-gray-800 font-semibold';
+    blocoEl.className = 'flex justify-between font-medium text-gray-600';
 
     document.getElementById('resumoPagamento').textContent = pag;
     document.getElementById('resumoTotal').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
@@ -338,12 +241,11 @@ function confirmarPedido() {
     const rua = document.getElementById('rua').value.trim();
     const num = document.getElementById('numero').value.trim();
     const bairro = document.getElementById('bairro').value;
-    const bairroOutro = document.getElementById('bairroOutro').value.trim();
     const ref = document.getElementById('referencia').value.trim();
     const pag = document.getElementById('pagamento').value;
     const troco = document.getElementById('troco').value.trim();
 
-    salvarDadosEndereco(nome, rua, num, bairro, ref, bairroOutro);
+    salvarDadosEndereco(nome, rua, num, bairro, ref);
 
     const subtotal = carrinho.reduce((acc, item) => acc + (item.preco * item.qtd), 0);
     const taxa = calcularTaxa(bairro, subtotal);
@@ -359,25 +261,14 @@ function confirmarPedido() {
     msg += `\n💰 *RESUMO DO PEDIDO:*`;
     msg += `\n• Subtotal Itens: R$ ${subtotal.toFixed(2).replace('.', ',')}`;
 
-    let motivoTaxa;
-    if (bairro === 'Outros') {
-        if (taxa === 0) {
-            motivoTaxa = 'GRÁTIS (Pedido acima de R$ 50)';
-        } else {
-            motivoTaxa = `R$ ${taxa.toFixed(2).replace('.', ',')} (outro bairro)`;
-        }
-    } else if (taxa === 0) {
-        motivoTaxa = 'GRÁTIS (Pedido acima de R$ 30)';
-    } else {
-        motivoTaxa = `R$ ${taxa.toFixed(2).replace('.', ',')}`;
-    }
+    let motivoTaxa = `R$ ${taxa.toFixed(2).replace('.', ',')}`;
 
     msg += `\n• Taxa de Entrega: ${motivoTaxa}`;
     msg += `\n• *Total Geral: R$ ${total.toFixed(2).replace('.', ',')}*\n\n`;
     msg += `📍 *ENDEREÇO DE ENTREGA:*\n`;
     msg += `👤 Recebedor: ${nome}\n`;
     msg += `🏠 Rua: ${rua}, Nº ${num}\n`;
-    msg += `🏘️ Bairro: ${bairro === 'Outros' ? bairroOutro : bairro}\n`;
+    msg += `🏘️ Bairro: ${bairro}\n`;
     msg += `🚩 Referência: ${ref}\n`;
     msg += `\n💳 *FORMA DE PAGAMENTO:*\n• ${pag}`;
 

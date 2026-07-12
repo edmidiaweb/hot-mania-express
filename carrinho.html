@@ -54,21 +54,11 @@
     </div>
 
     <main class="max-w-xl mx-auto p-4 mt-1">
-        <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4 text-sm text-blue-900">
-            <p class="font-bold mb-1 flex items-center gap-2"><i class="fas fa-truck"></i> Condições de entrega</p>
-            <p>Pedidos realizados.</p>
-            <p class="mt-2">O frete grátis .</p>
-        </div>
-
+        
         <div id="etapa-1" class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
             <h2 class="text-sm font-bold text-red-950 uppercase tracking-wider mb-3 flex items-center gap-2">
                 <i class="fas fa-shopping-basket text-red-500"></i> Seus Produtos Selecionados
             </h2>
-
-            <div id="bannerFrete" class="hidden flex items-center gap-2 text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2 mb-3">
-                <i class="fas fa-truck text-emerald-500"></i>
-                <span>Entregas <strong>grátis</strong> a partir de <strong>R$ 30,00</strong> em produtos!</span>
-            </div>
 
             <div id="listaItens" class="divide-y divide-gray-100 text-sm"></div>
 
@@ -115,53 +105,24 @@
                 </div>
                 <div class="col-span-2">
                     <label for="bairro" class="block text-xs font-semibold text-gray-500 mb-1">Bairro</label>
-                    <select id="bairro" onchange="onBairroChange()"
+                    <select id="bairro"
                         class="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm text-gray-700 transition">
                         <option value="" disabled selected>Selecione seu bairro...</option>
-                        <option value="Centro">Centro (Taxa: R$ 5,00)</option>
-                        <option value="Praia">Praia (Taxa: R$ 5,00)</option>
-                        <option value="Vila Nova">Vila Nova (Taxa: R$ 5,00)</option>
-                        <option value="Balneário">Balneário (Taxa: R$ 5,00)</option>
-                        <option value="Outros">Outros bairros</option>
-                    </select>
-                </div>
-            </div>
-
-            <div id="campoOutroBairro" class="hidden">
-                <label class="block text-xs font-semibold text-gray-500 mb-1">Digite o bairro</label>
-                <div class="relative">
-                    <input type="text" id="bairroOutro" placeholder="Qual é o seu bairro?"
-                        class="w-full px-4 py-2.5 bg-white border border-amber-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent text-sm text-gray-700 transition" />
-                </div>
-                <p class="text-xs text-amber-700 mt-1">Entregas em toda a região.</p>
-            </div>
-
-            <div id="avisoOutrosBairros" class="hidden">
-                <div class="bg-amber-50 border border-amber-300 rounded-xl p-4 text-sm text-amber-800 space-y-2">
-                    <p class="font-bold flex items-center gap-2">
-                        <i class="fas fa-exclamation-triangle text-amber-500"></i> Atenção — Entrega em outro bairro
-                    </p>
-                    <ul class="list-disc list-inside space-y-1 text-xs leading-relaxed">
-                        <li>A taxa de entrega para este bairro é de <strong>R$ 10,00</strong>.</li>
-                        <li id="mensagemFreteOutros"><strong>Promoção:</strong> Frete GRÁTIS para compras acima de <strong>R$ 50,00</strong>!</li>
-                        <li>O pagamento pode ser realizado em <strong>Dinheiro ou Pix</strong>.</li>
-                    </ul>
-                </div>
-                <div class="mt-2">
-                    <label for="confirmaOutrosBairros" class="block text-xs font-semibold text-gray-500 mb-1">
-                        Confirmação obrigatória
-                    </label>
-                    <select id="confirmaOutrosBairros" onchange="atualizarBotaoEtapa2()"
-                        class="w-full px-4 py-2.5 bg-white border border-amber-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent text-sm text-gray-700 transition">
-                        <option value="" disabled selected>Selecione para confirmar...</option>
-                        <option value="sim">Sim, estou ciente e aceito as condições</option>
-                        <option value="nao">Não, quero escolher outro bairro</option>
+                        <option value="Belas Artes">Belas Artes (R$ 5,00)</option>
+                        <option value="Praia do Sonho">Praia do Sonho (R$ 5,00)</option>
+                        <option value="Cibratel (até a AV São Paulo)">Cibratel (até a AV São Paulo) (R$ 5,00)</option>
+                        <option value="Corumbá">Corumbá (R$ 5,00)</option>
+                        <option value="Ieda">Ieda (R$ 5,00)</option>
+                        <option value="Sabaúna">Sabaúna (R$ 6,00)</option>
+                        <option value="Guapiranga">Guapiranga (R$ 6,00)</option>
+                        <option value="Umuarama">Umuarama (R$ 6,00)</option>
+                        <option value="América">América (R$ 6,00)</option>
                     </select>
                 </div>
             </div>
 
             <div>
-                <label class="block text-xs font-semibold text-gray-500 mb-1">Ponto de Referência <span class="text-red-500 font-bold">(Obrigatório)</span></label>
+                <label class="block text-xs font-semibold text-gray-500 mb-1 mt-3">Ponto de Referência <span class="text-red-500 font-bold">(Obrigatório)</span></label>
                 <input type="text" id="referencia" placeholder="Ex: Próximo ao mercado"
                     class="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm text-gray-700 transition" />
             </div>
@@ -176,7 +137,7 @@
             </div>
 
             <div id="containerTroco" class="hidden">
-                <label class="block text-xs font-semibold text-gray-500 mb-1">Precisa de troco para quanto?</label>
+                <label class="block text-xs font-semibold text-gray-500 mb-1">Precisa de troco para quanto? <span class="text-red-500 font-bold">(Obrigatório)</span></label>
                 <input type="text" id="troco" placeholder="Ex: Troco para R$ 50,00"
                     class="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm text-gray-700 transition" />
             </div>
@@ -242,7 +203,7 @@
                         <i class="fas fa-copy"></i> Copiar
                     </button>
                 </div>
-                <p class="text-xs text-amber-700 mt-2">Use este código no seu app de banco para realizar o pagamento.</p>
+                <p class="text-xs text-amber-700 mt-2">Use este código no seu app de banco.</p>
             </div>
 
             <div class="flex gap-3">
@@ -258,13 +219,11 @@
         </div>
     </main>
 
-    <!-- Início do Footer -->
-<footer class="mt-8 py-6 bg-black/70 backdrop-blur-md border-t border-gray-800 text-center w-full relative z-10">
-    <p class="text-xs text-gray-400">
-        Desenvolvido por <span class="font-bold text-white tracking-wide">ED ART&MÍDIA</span> serviços de tecnologia.
-    </p>
-</footer>
-<!-- Fim do Footer -->
+    <footer class="mt-8 py-6 bg-black/70 backdrop-blur-md border-t border-gray-800 text-center w-full relative z-10">
+        <p class="text-xs text-gray-400">
+            Desenvolvido por <span class="font-bold text-white tracking-wide">ED ART&MÍDIA</span> serviços de tecnologia.
+        </p>
+    </footer>
 
     <script src="carrinho.js"></script>
 

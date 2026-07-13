@@ -85,6 +85,10 @@
                 <i class="fas fa-map-marked-alt text-red-500"></i> Dados para Entrega
             </h2>
 
+            <p class="text-xs text-gray-500 -mt-1">
+                <span class="text-red-500 font-bold">*</span> Todos os campos são obrigatórios para finalizar o pedido.
+            </p>
+
             <div>
                 <label class="block text-xs font-semibold text-gray-500 mb-1">Nome do Recebedor</label>
                 <input type="text" id="nomeRecebedor" placeholder="Ex: João da Silva"
@@ -204,6 +208,12 @@
                     </button>
                 </div>
                 <p class="text-xs text-amber-700 mt-2">Use este código no seu app de banco.</p>
+                <div class="flex items-start gap-2 mt-3 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+                    <i class="fas fa-exclamation-triangle text-red-500 mt-0.5"></i>
+                    <p class="text-xs font-semibold text-red-700">
+                        Atenção: o preparo do seu pedido só será iniciado após o envio do comprovante de pagamento pelo WhatsApp.
+                    </p>
+                </div>
             </div>
 
             <div class="flex gap-3">

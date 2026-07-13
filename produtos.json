@@ -1,20 +1,20 @@
 [
     {
-        "Produto": "Hot Dog Simples",
-        "Valor de venda (R$)": 12.00,
+        "Produto": "Hot Dog Clássico (pão, salsicha, molho e batata palha)",
+        "Valor de venda (R$)": 7.00,
         "Categoria": "Tradicionais",
         "Estoque": 100,
-        "imagem": "hotdog_simples.png"
+        "imagem": "hotsimples.png"
     },
     {
-        "Produto": "Hot Dog Completo",
+        "Produto": "Hot Dog Tradicional (pão, salsicha, molho, queijo e batata palha)",
         "Valor de venda (R$)": 15.00,
         "Categoria": "Tradicionais",
         "Estoque": 100,
         "imagem": "hotdog_completo.png"
     },
     {
-        "Produto": "Hot Dog Especial",
+        "Produto": "Hot Dog Gourmet (pão, salsicha, molho especial, queijo, bacon e batata palha)",
         "Valor de venda (R$)": 18.00,
         "Categoria": "Especiais",
         "Estoque": 50,
@@ -35,18 +35,18 @@
         "imagem": "hotdog_bacon.png"
     },
     {
-        "Produto": "Refrigerante Lata",
-        "Valor de venda (R$)": 5.00,
+        "Produto": "Coca Cola Lata",
+        "Valor de venda (R$)": 6.00,
         "Categoria": "Bebidas",
         "Estoque": 200,
-        "imagem": "refri_lata.png"
+        "imagem": "coca.png"
     },
     {
-        "Produto": "Suco Natural",
+        "Produto": "Suco Del Valle",
         "Valor de venda (R$)": 7.00,
         "Categoria": "Bebidas",
         "Estoque": 50,
-        "imagem": "suco_natural.png"
+        "imagem": "delvale.png"
     },
     {
         "Produto": "Água Mineral",

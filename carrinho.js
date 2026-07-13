@@ -20,6 +20,15 @@ document.addEventListener('DOMContentLoaded', () => {
     atualizarStepper(1);
     atualizarResumoFinanceiro();
     verificarPagamento();
+
+    ['nomeRecebedor', 'rua', 'numero', 'bairro', 'referencia', 'troco'].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const evento = (el.tagName === 'SELECT') ? 'change' : 'input';
+        el.addEventListener(evento, () => {
+            if (el.value.trim()) marcarCampo(el, false);
+        });
+    });
 });
 
 function atualizarStepper(etapa) {
@@ -69,23 +78,37 @@ function validarEtapa1() {
 }
 
 function validarEtapa2() {
-    const nome = document.getElementById('nomeRecebedor').value.trim();
-    const rua = document.getElementById('rua').value.trim();
-    const num = document.getElementById('numero').value.trim();
-    const bairro = document.getElementById('bairro').value;
-    const ref = document.getElementById('referencia').value.trim();
+    const campos = [
+        { id: 'nomeRecebedor', label: 'Nome do Recebedor' },
+        { id: 'rua', label: 'Rua / Logradouro' },
+        { id: 'numero', label: 'Número' },
+        { id: 'bairro', label: 'Bairro' },
+        { id: 'referencia', label: 'Ponto de Referência' }
+    ];
 
-    if (!nome || !rua || !num || !bairro || !ref) {
-        alert("Por favor, preencha todos os campos: Nome, Rua, Número, Bairro e Ponto de Referência.");
+    // Limpa destaques anteriores
+    campos.forEach(campo => marcarCampo(document.getElementById(campo.id), false));
+    marcarCampo(document.getElementById('troco'), false);
+
+    const camposVazios = campos.filter(campo => !document.getElementById(campo.id).value.trim());
+
+    if (camposVazios.length > 0) {
+        camposVazios.forEach(campo => marcarCampo(document.getElementById(campo.id), true));
+        alert("Há campo(s) obrigatório(s) vazio(s). Por favor, preencha todos os campos destacados em vermelho.");
+        document.getElementById(camposVazios[0].id).focus();
         return false;
     }
 
+    const bairro = document.getElementById('bairro').value;
     const pag = document.getElementById('pagamento').value;
     if (pag === 'Dinheiro') {
-        const trocoValor = document.getElementById('troco').value.trim();
+        const trocoEl = document.getElementById('troco');
+        const trocoValor = trocoEl.value.trim();
 
         if (!trocoValor) {
+            marcarCampo(trocoEl, true);
             alert("Por favor, informe para quanto precisa de troco.");
+            trocoEl.focus();
             return false;
         }
 
@@ -95,17 +118,30 @@ function validarEtapa2() {
         const trocoNum = parseFloat(trocoValor.replace(',', '.'));
 
         if (isNaN(trocoNum)) {
+            marcarCampo(trocoEl, true);
             alert("Por favor, informe um valor de troco válido.");
+            trocoEl.focus();
             return false;
         }
 
         if (trocoNum < total) {
+            marcarCampo(trocoEl, true);
             alert(`O valor do troco (R$ ${trocoNum.toFixed(2).replace('.', ',')}) é menor que o total do pedido (R$ ${total.toFixed(2).replace('.', ',')}). Por favor, corrija.`);
+            trocoEl.focus();
             return false;
         }
     }
 
     return true;
+}
+
+function marcarCampo(elemento, invalido) {
+    if (!elemento) return;
+    if (invalido) {
+        elemento.classList.add('border-red-500', 'ring-2', 'ring-red-300');
+    } else {
+        elemento.classList.remove('border-red-500', 'ring-2', 'ring-red-300');
+    }
 }
 
 function renderizarItensCarrinho() {
@@ -273,6 +309,7 @@ function confirmarPedido() {
     msg += `\n💳 *FORMA DE PAGAMENTO:*\n• ${pag}`;
 
     if (pag === 'Dinheiro' && troco) msg += ` (troco para R$ ${troco})`;
+    if (pag === 'Pix') msg += `\n\n⚠️ *O preparo do pedido será iniciado somente após o envio do comprovante de pagamento.*`;
 
     window.open(`https://wa.me/5513996305218?text=${encodeURIComponent(msg)}`, '_blank');
 
